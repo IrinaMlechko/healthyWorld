@@ -55,7 +55,7 @@ public class UserController {
             }
         } catch (ServiceException e) {
             model.addAttribute("errorMsg", e.getLocalizedMessage());
-            return "redirect:/error_500";
+            return "error_500";
         }
     }
 
@@ -79,7 +79,7 @@ public class UserController {
         try {
             UserDto userDto = new UserDto(login, password, firstName, lastName, dateOfBirth);
             userService.registerUser(userDto);
-            return "redirect:/catalog";
+            return "redirect:/signUpSuccessful";
         } catch (UserWithThisLoginAlreadyExists e) {
             model.addAttribute("failed", e.getMessage());
             return "registration";
@@ -94,5 +94,10 @@ public class UserController {
         } catch (IncorrectDataOfBirthFormat e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping("/signUpSuccessful")
+    public String signUpSuccessful() {
+        return "registration_successful";
     }
 }
