@@ -1,9 +1,6 @@
 package com.example.pharmacy.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,6 +24,9 @@ public class User extends BaseEntity {
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "credentials_id", nullable = false)
+    private Credentials credentials;
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("User{");

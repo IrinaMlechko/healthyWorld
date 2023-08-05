@@ -20,9 +20,7 @@ public class Credentials extends BaseEntity{
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+
 
     @Override
     public String toString() {

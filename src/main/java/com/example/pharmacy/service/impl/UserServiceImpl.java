@@ -31,22 +31,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean authenticate(String userName, String password) throws ServiceException {
-        log.info("Authenticate user " + userName);
-        boolean match;
+    public Optional<User> authenticate(String userName, String password) throws ServiceException {
+        log.info("Authenticate and get user if exists: " + userName);
         try {
             String encryptedPassword = PasswordEncryptor.encryptPassword(password);
-            match = credentialsRepository.existsByLoginAndPassword(userName, encryptedPassword);
+            return userRepository.findByCredentials_LoginAndCredentials_Password(userName, encryptedPassword);
         } catch (NoSuchAlgorithmException e) {
             throw new ServiceException("Error encrypting password", e);
         }
-        return match;
     }
 
     @Override
     public Optional<User> findUserByLogin(String login) throws ServiceException {
         log.info("Get name for the user with login " + login);
-        Optional<User> userOptional = credentialsRepository.findUserByLogin(login);
+        Optional<User> userOptional = userRepository.findByCredentials_Login(login);
         return userOptional;
     }
 
@@ -59,7 +57,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(User user) throws ServiceException {
         userRepository.save(user);
-
     }
 
     @Override

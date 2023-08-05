@@ -15,4 +15,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 //            "ON u.credentials = c " +
 //            "WHERE c.login = :login")
 //    Optional<User> findUserFirstNameByLogin(String login);
+
+    Optional<User> findByCredentials_Login(String login);
+
+    Optional<User> findByCredentials_LoginAndCredentials_Password(String userName, String encryptedPassword);
 }

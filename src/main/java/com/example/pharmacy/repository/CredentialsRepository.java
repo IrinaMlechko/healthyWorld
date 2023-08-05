@@ -11,8 +11,4 @@ import java.util.Optional;
 public interface CredentialsRepository extends JpaRepository<Credentials, Integer> {
     boolean existsByLoginAndPassword(String userName, String encryptedPassword);
 
-    @Query("SELECT c.user " +
-            "FROM Credentials c " +
-            "WHERE c.login = :login")
-    Optional<User> findUserByLogin(String login);
 }

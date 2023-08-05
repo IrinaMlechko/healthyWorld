@@ -3,6 +3,7 @@ package com.example.pharmacy.controller;
 import com.example.pharmacy.entity.User;
 import com.example.pharmacy.exception.ServiceException;
 import com.example.pharmacy.service.UserService;
+import com.example.pharmacy.util.Role;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,10 +35,12 @@ public class UserController {
                         HttpSession session,
                         Model model) {
         try {
-            if (userService.authenticate(login, password)) {
-                Optional<User> userOptional= userService.findUserByLogin(login);
-                String firstName = userOptional.map(User::getFirstName).orElse(login);
+            Optional<User> userOptional = userService.authenticate(login, password);
+            if (userOptional.isPresent()){
+                String firstName = userOptional.get().getFirstName();
+                Role role = userOptional.get().getCredentials().getRole();
                 session.setAttribute("userName", firstName);
+                session.setAttribute("role", role);
                 return "redirect:/catalog";
             } else {
                 model.addAttribute("loginFailed", true);

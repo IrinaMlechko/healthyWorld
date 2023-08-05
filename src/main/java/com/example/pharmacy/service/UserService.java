@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 public interface UserService {
-    boolean authenticate(String userName, String password) throws ServiceException;
+    Optional<User>  authenticate(String userName, String password) throws ServiceException;
 
     Optional<User> findUserByLogin(String login) throws ServiceException;
 
