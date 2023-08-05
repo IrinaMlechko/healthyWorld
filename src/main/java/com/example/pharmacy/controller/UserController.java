@@ -1,9 +1,14 @@
 package com.example.pharmacy.controller;
 
+import com.example.pharmacy.dto.UserDto;
 import com.example.pharmacy.entity.User;
+import com.example.pharmacy.exception.IncorrectDataOfBirthFormat;
+import com.example.pharmacy.exception.NotValidLoginException;
 import com.example.pharmacy.exception.ServiceException;
+import com.example.pharmacy.exception.UserWithThisLoginAlreadyExists;
 import com.example.pharmacy.service.UserService;
 import com.example.pharmacy.util.Role;
+import com.example.pharmacy.util.Validator;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Controller
@@ -63,13 +70,29 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String register(@RequestParam("login") String login,
-                           @RequestParam("password") String password,
-                           @RequestParam("firstName") String firstName,
-                           @RequestParam("lastName") String lastName,
-                           @RequestParam("dateOfBirth") String dateOfBirthStr,
-                           Model model) {
-        // Handle user registration logic here
-        return "redirect:/";
+    public String registerUser(@RequestParam String login,
+                               @RequestParam String password,
+                               @RequestParam String firstName,
+                               @RequestParam String lastName,
+                               @RequestParam String dateOfBirth,
+                               Model model) {
+        try {
+            UserDto userDto = new UserDto(login, password, firstName, lastName, dateOfBirth);
+            userService.registerUser(userDto);
+            return "redirect:/catalog";
+        } catch (UserWithThisLoginAlreadyExists e) {
+            model.addAttribute("failed", e.getMessage());
+            return "registration";
+        }  catch (IllegalArgumentException e) {
+            model.addAttribute("failed", e.getMessage());
+            return "registration";
+        } catch (NotValidLoginException e) {
+            model.addAttribute("failed", "Invalid username format.");
+            return "registration";
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        } catch (IncorrectDataOfBirthFormat e) {
+            throw new RuntimeException(e);
+        }
     }
 }

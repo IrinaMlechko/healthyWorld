@@ -36,4 +36,40 @@ public class User extends BaseEntity {
         sb.append('}');
         return sb.toString();
     }
+    public static Builder newBuilder() {
+        return new User().new Builder();
+    }
+    public class Builder {
+
+        private Builder() {
+        }
+
+        public Builder setId(int id) {
+            User.super.setId(id);
+            return this;
+        }
+
+        public Builder setFirstName(String firstName) {
+            User.this.firstName = firstName;
+            return this;
+        }
+
+        public Builder setLastName(String lastName) {
+            User.this.lastName = lastName;
+            return this;
+        }
+
+        public Builder setDateOfBirth(LocalDate dateOfBirth) {
+            User.this.dateOfBirth = dateOfBirth;
+            return this;
+        }
+        public Builder setCredentials(Credentials credentials) {
+            User.this.credentials = credentials;
+            return this;
+        }
+        public User build() {
+            return User.this;
+        }
+
+    }
 }

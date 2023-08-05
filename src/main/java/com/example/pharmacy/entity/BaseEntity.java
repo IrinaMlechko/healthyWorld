@@ -8,7 +8,7 @@ import java.util.Objects;
 @MappedSuperclass
 public class BaseEntity {
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
 
     BaseEntity() {

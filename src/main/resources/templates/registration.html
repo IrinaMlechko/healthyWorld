@@ -2,49 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Your service - Registration</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            padding: 20px;
-        }
-
-        form {
-            width: 300px;
-            margin: 0 auto;
-            background-color: #ffffff;
-            padding: 20px;
-            border: 1px solid #cccccc;
-            border-radius: 5px;
-        }
-
-        input[type="text"],
-        input[type="password"] {
-            width: 90%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #cccccc;
-            border-radius: 3px;
-        }
-
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        span.small-text {
-            font-size: 12px;
-            color: #888;
-        }
-    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="icon"
+          href="https://yt3.ggpht.com/ytc/AMLnZu-0bY4NaExphby-ARMZtEXnhrE0VVrzYqo2H1I=s900-c-k-c0x00ffffff-no-rj"
+          type="image/jpeg">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 </head>
 <body>
 <br/>
-<form th:action="@{/controller}" method="post">
+<form th:action="@{/registration}" method="post">
     <input type="hidden" name="command" value="signup"/>
     <label for="login">Login:</label>
     <br/>
@@ -70,7 +36,7 @@
     <br/>
     <input type="submit" name="submit" value="Register"/>
     <br/>
-    <span th:text="${failed}"></span>
+    <span th:text="${failed}" th:if="${failed} != null" style="color: red;"></span>
 </form>
 </body>
 </html>

@@ -9,12 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-//    @Query("SELECT u " +
-//            "FROM User u " +
-//            "JOIN Credentials c " +
-//            "ON u.credentials = c " +
-//            "WHERE c.login = :login")
-//    Optional<User> findUserFirstNameByLogin(String login);
 
     Optional<User> findByCredentials_Login(String login);
 

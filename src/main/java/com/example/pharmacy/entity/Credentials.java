@@ -31,5 +31,38 @@ public class Credentials extends BaseEntity{
         sb.append('}');
         return sb.toString();
     }
+    public static Credentials.Builder newBuilder() {
+        return new Credentials().new Builder();
+    }
+
+    public class Builder {
+
+        private Builder() {
+        }
+
+        public Credentials.Builder setId(int id) {
+            Credentials.super.setId(id);
+            return this;
+        }
+
+        public Credentials.Builder setLogin(String login) {
+            Credentials.this.login = login;
+            return this;
+        }
+
+        public Credentials.Builder setPassword(String password) {
+            Credentials.this.password = password;
+            return this;
+        }
+        public Credentials.Builder setRole(Role role) {
+            Credentials.this.role = role;
+            return this;
+        }
+
+        public Credentials build() {
+            return Credentials.this;
+        }
+
+    }
 
 }

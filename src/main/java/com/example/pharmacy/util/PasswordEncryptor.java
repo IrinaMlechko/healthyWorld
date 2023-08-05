@@ -8,8 +8,13 @@ public class PasswordEncryptor {
 
     public static final String ALGORITHM = "MD5";
 
-    public static String encryptPassword(String password) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance(ALGORITHM);
+    public static String encryptPassword(String password){
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance(ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Password encryption failed.", e);
+        }
         md.update(password.getBytes());
         byte[] digest = md.digest();
         StringBuilder sb = new StringBuilder();
