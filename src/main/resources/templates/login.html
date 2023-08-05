@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="icon"
+          href="https://yt3.ggpht.com/ytc/AMLnZu-0bY4NaExphby-ARMZtEXnhrE0VVrzYqo2H1I=s900-c-k-c0x00ffffff-no-rj"
+          type="image/jpeg">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="~{blocks/header :: header}"></header>
+<div class="container mt-5">
+    <h1>Login</h1>
+    <p th:if="${error}" class="text-danger" th:text="${error}"></p>
+    <form th:action="@{/login}"  th:object="${oldUser}" method="POST">
+        <label for="username" class="form-label">Username:</label>
+        <input type="text" id="username" placeholder="Username..." th:field="*{username}" class="form-control" required><br>
+
+        <label for="password" class="form-label">Password:</label>
+        <input type="password" id="password" placeholder="Password..." th:field="*{password}" class="form-control" required><br>
+
+        <input type="submit" value="Log in" class="btn btn-lg btn-primary">
+    </form>
+    <p>Don't have an account? <a href="/registration" class="col-4">Sign up here</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Medicines</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="icon" href="https://yt3.ggpht.com/ytc/AMLnZu-0bY4NaExphby-ARMZtEXnhrE0VVrzYqo2H1I=s900-c-k-c0x00ffffff-no-rj"
+          type="image/jpeg">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="header">
+    <!-- Welcome message with user name -->
+    <p>Welcome, <span th:text="${session.userName}"></span>!</p>
+    <!-- Logout button -->
+    <form action="/logout">
+        <input type="submit" value="Log Out" class="btn btn-primary"/>
+    </form>
+</div>
+<div class="content">
+    <h1>Medicines</h1>
+    <th:block th:if="${#lists.isEmpty(medicines)}">
+        <p class="no-medicines-message">No medicines found.</p>
+    </th:block>
+    <th:block th:unless="${#lists.isEmpty(medicines)}">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Manufacturer</th>
+                <th>Price</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="medicine : ${medicines}">
+                <td th:text="${medicine.medicineName}"></td>
+                <td th:text="${medicine.manufacturer}"></td>
+                <td th:text="${medicine.price}"></td>
+                <td th:text="${medicine.description}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </th:block>
+</div>
+</body>
+</html>
