@@ -29,12 +29,15 @@ public class Receipt extends BaseEntity {
     @JoinColumn(name = "patient_id")
     private User patient;
 
+    private int quantity;
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Receipt{");
         sb.append("medicine=").append(medicine);
         sb.append(", doctor=").append(doctor);
         sb.append(", patient=").append(patient);
+        sb.append(", quantity=").append(quantity);
         sb.append('}');
         return sb.toString();
     }

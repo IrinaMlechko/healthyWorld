@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Receipts</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="icon" href="https://yt3.ggpht.com/ytc/AMLnZu-0bY4NaExphby-ARMZtEXnhrE0VVrzYqo2H1I=s900-c-k-c0x00ffffff-no-rj"
+          type="image/jpeg">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="header">
+    <!-- Logout button -->
+    <form action="/logout">
+        <input type="submit" value="Log Out" class="btn btn-primary float-right"/>
+    </form>
+    <!-- Welcome message with user name -->
+    <h3>Welcome, <span th:text="${session.userName}"></span>!</h3>
+</div>
+<div class="content">
+    <h1>Receipts</h1>
+    <th:block th:if="${#lists.isEmpty(receipts)}">
+        <p class="no-receipts-message">No receipts found.</p>
+    </th:block>
+    <th:block th:unless="${#lists.isEmpty(receipts)}">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Medicine Name</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Date of birth</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="receipt : ${receipts}">
+                <td th:text="${receipt.id}"></td>
+                <td th:text="${receipt.medicineName}"></td>
+                <td th:text="${receipt.patientFirstName}"></td>
+                <td th:text="${receipt.patientLastName}"></td>
+                <td th:text="${receipt.patientsDateOfBirth}"></td>
+                <td th:text="${receipt.quantity}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </th:block>
+</div>
+</body>
+</html>
