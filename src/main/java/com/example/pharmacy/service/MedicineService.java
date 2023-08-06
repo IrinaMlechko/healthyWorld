@@ -19,4 +19,6 @@ public interface MedicineService {
     Integer createOrder(User user);
 
     void addMedicineToOrder(Integer orderId, int medicineId, int quantity, int userId);
+
+    void refreshReceiptsStatus(int receiptId);
 }

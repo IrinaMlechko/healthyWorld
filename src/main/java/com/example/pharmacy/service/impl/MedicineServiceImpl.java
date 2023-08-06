@@ -8,6 +8,7 @@ import com.example.pharmacy.service.MedicineService;
 import com.example.pharmacy.service.ReceiptService;
 import com.example.pharmacy.util.ReceiptStatus;
 import com.example.pharmacy.util.Status;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -70,7 +71,6 @@ public class MedicineServiceImpl implements MedicineService {
                 OrderMedicineId orderMedicineId = new OrderMedicineId(orderId, medicineId);
                 OrderMedicine orderMedicine = orderMedicineRepository.findById(orderMedicineId)
                         .orElseGet(() -> new OrderMedicine(order, medicine, 0, null));
-
                 orderMedicine.setQuantity(orderMedicine.getQuantity() + quantity);
                 order.addOrderMedicine(orderMedicine);
                 ReceiptStatus receiptStatus = obtainReceiptStatus(userId, medicineId, quantity);
@@ -82,6 +82,25 @@ public class MedicineServiceImpl implements MedicineService {
                 orderMedicineRepository.save(orderMedicine);
             });
         });
+    }
+    public void refreshReceiptsStatus(int receiptId) {
+        Optional<Receipt> receiptOptional = receiptService.findReceiptById(receiptId);
+        receiptOptional.ifPresentOrElse(
+                receipt -> {
+                    List<OrderMedicine> orderMedicines = orderMedicineRepository.findAllByOrderUserAndMedicineIdAndOrderStatus(
+                            receipt.getPatient(),
+                            receipt.getMedicine().getId(),
+                            Status.NEW
+                    );
+                    for (OrderMedicine orderMedicine : orderMedicines) {
+                        orderMedicine.setReceiptStatus(obtainReceiptStatus(receipt.getPatient().getId(), receipt.getMedicine().getId(), orderMedicine.getQuantity()));
+                        orderMedicineRepository.save(orderMedicine);
+                    }
+                },
+                () -> {
+                    log.warn("Receipt with ID " + receiptId + " not found.");
+                }
+        );
     }
 
     public ReceiptStatus obtainReceiptStatus(int patientId, int medicineId, int quantity) {

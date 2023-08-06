@@ -1,15 +1,15 @@
 package com.example.pharmacy.service.impl;
 
 import com.example.pharmacy.dto.ReceiptDto;
-import com.example.pharmacy.entity.Medicine;
-import com.example.pharmacy.entity.Receipt;
-import com.example.pharmacy.entity.User;
+import com.example.pharmacy.entity.*;
 import com.example.pharmacy.exception.ServiceException;
 import com.example.pharmacy.mapper.ReceiptMapper;
 import com.example.pharmacy.repository.MedicineRepository;
+import com.example.pharmacy.repository.OrderMedicineRepository;
 import com.example.pharmacy.repository.ReceiptRepository;
 import com.example.pharmacy.repository.UserRepository;
 import com.example.pharmacy.service.ReceiptService;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,12 +25,14 @@ public class ReceiptServiceImpl implements ReceiptService {
     private final ReceiptRepository receiptRepository;
     private final UserRepository userRepository;
     private final MedicineRepository medicineRepository;
+    private final OrderMedicineRepository orderMedicineRepository;
     private final ReceiptMapper receiptMapper;
     @Autowired
-    private ReceiptServiceImpl(ReceiptRepository receiptRepository, UserRepository userRepository, MedicineRepository medicineRepository, ReceiptMapper receiptMapper) {
+    private ReceiptServiceImpl(ReceiptRepository receiptRepository, UserRepository userRepository, MedicineRepository medicineRepository, OrderMedicineRepository orderMedicineRepository, ReceiptMapper receiptMapper) {
         this.receiptRepository = receiptRepository;
         this.userRepository = userRepository;
         this.medicineRepository = medicineRepository;
+        this.orderMedicineRepository = orderMedicineRepository;
         this.receiptMapper = receiptMapper;
     }
 
@@ -42,7 +44,6 @@ public class ReceiptServiceImpl implements ReceiptService {
                 .map(receiptMapper::toDto)
                 .collect(Collectors.toList());
     }
-
     @Override
     public void confirmReceipt(int receiptId, int doctorId) throws ServiceException {
         User doctor = userRepository.findById(doctorId)
@@ -56,7 +57,7 @@ public class ReceiptServiceImpl implements ReceiptService {
     @Override
     public boolean isReceiptProvided(int patientId, int medicineId, int quantity){
         Integer sum = receiptRepository.sumQuantityByMedicineIdAndPatientId(patientId, medicineId);
-        return sum != null && sum > quantity;
+        return sum != null && sum >= quantity;
     }
 
     @Override
@@ -70,6 +71,11 @@ public class ReceiptServiceImpl implements ReceiptService {
         else{
             log.warn(String.format("Error by requesting a receipt for user id %s , medicine id %s, quantity %s", userId, medicineId, quantity));
         }
-    };
+    }
+
+    @Override
+    public Optional<Receipt> findReceiptById(int id){
+        return receiptRepository.findById(id);
+    }
 
 }

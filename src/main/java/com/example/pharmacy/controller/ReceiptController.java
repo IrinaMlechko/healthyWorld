@@ -2,6 +2,7 @@ package com.example.pharmacy.controller;
 
 import com.example.pharmacy.dto.ReceiptDto;
 import com.example.pharmacy.exception.ServiceException;
+import com.example.pharmacy.service.MedicineService;
 import com.example.pharmacy.service.ReceiptService;
 import com.example.pharmacy.util.Role;
 import jakarta.servlet.http.HttpSession;
@@ -17,9 +18,11 @@ import java.util.List;
 public class ReceiptController {
 
     private final ReceiptService receiptService;
+    private final MedicineService medicineService;
 
-    public ReceiptController(ReceiptService receiptService) throws ServiceException {
+    public ReceiptController(ReceiptService receiptService, MedicineService medicineService) throws ServiceException {
         this.receiptService = receiptService;
+        this.medicineService = medicineService;
     }
 
     @GetMapping(path = "/tasks")
@@ -34,6 +37,7 @@ public class ReceiptController {
         if (session.getAttribute("userId") != null && session.getAttribute("role").equals(Role.DOCTOR)) {
             int doctorId = (int) session.getAttribute("userId");
             receiptService.confirmReceipt(receiptId, doctorId);
+            medicineService.refreshReceiptsStatus(receiptId);
             return "redirect:/tasks";
         } else {
             return "impossible_to_confirm_receipt";
