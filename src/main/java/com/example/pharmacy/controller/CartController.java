@@ -5,9 +5,7 @@ import com.example.pharmacy.service.CartService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/cart")
@@ -27,6 +25,7 @@ public class CartController {
         return "cart";
     }
 
+
     @PostMapping("/buy")
     public String buyItems(Model model) {
         boolean isReadyToBuy = cartService.isReadyToBuy();
@@ -39,6 +38,13 @@ public class CartController {
             model.addAttribute("errorMsg", errorMsg);
             return "cart";
         }
+    }
+
+    @DeleteMapping("/remove/{medicineId}")
+    public String removeItemFromCart(@PathVariable int medicineId, HttpSession session) {
+        int userId = (int) session.getAttribute("userId");
+        cartService.removeItemFromCart(userId, medicineId);
+        return "redirect:/cart";
     }
 }
 

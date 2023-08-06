@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderMedicineDto {
+    private int medicineId;
     private String medicineName;
     private String manufacturer;
     private BigDecimal price;

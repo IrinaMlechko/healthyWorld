@@ -31,15 +31,24 @@
                 <th>Price</th>
                 <th>Quantity</th>
                 <th>Receipt Status</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="medicine : ${orderDto.orderMedicines}">
+            <tr th:each="medicine, rowStat : ${orderDto.orderMedicines}">
                 <td th:text="${medicine.medicineName}"></td>
                 <td th:text="${medicine.manufacturer}"></td>
                 <td th:text="${medicine.price}"></td>
-                <td th:text="${medicine.quantity}"></td>
+                <td>
+                    <input type="number" min="1" th:value="${medicine.quantity}" th:field="*{orderDto.orderMedicines[__${rowStat.index}__].quantity}"/>
+                </td>
                 <td th:text="${medicine.receiptStatus}"></td>
+                <td>
+                    <form th:action="@{'/cart/remove/' + ${medicine.medicineId}}" method="post">
+                        <input type="hidden" name="_method" value="DELETE" />
+                        <input type="submit" value="Remove" class="btn btn-danger"/>
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>

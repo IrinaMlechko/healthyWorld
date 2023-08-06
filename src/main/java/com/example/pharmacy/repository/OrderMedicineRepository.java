@@ -15,4 +15,8 @@ public interface OrderMedicineRepository extends JpaRepository<OrderMedicine, Or
     List<OrderMedicine> findAllByOrder_UserId(int userId);
 
     List<OrderMedicine> findAllByOrderUserAndMedicineIdAndOrderStatus(User user, int medicineId, Status status);
+
+    OrderMedicine findByOrder_User_IdAndMedicine_Id(int userId, int medicineId);
+
+    List<OrderMedicine> findAllByOrder(Order order);
 }

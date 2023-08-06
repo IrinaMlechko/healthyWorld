@@ -3,8 +3,10 @@ package com.example.pharmacy.service.impl;
 import com.example.pharmacy.dto.OrderDto;
 import com.example.pharmacy.dto.OrderMedicineDto;
 import com.example.pharmacy.entity.Medicine;
+import com.example.pharmacy.entity.Order;
 import com.example.pharmacy.entity.OrderMedicine;
 import com.example.pharmacy.repository.OrderMedicineRepository;
+import com.example.pharmacy.repository.OrderRepository;
 import com.example.pharmacy.repository.UserRepository;
 import com.example.pharmacy.service.CartService;
 import com.example.pharmacy.util.ReceiptStatus;
@@ -19,10 +21,12 @@ import java.util.List;
 public class CartServiceImpl implements CartService {
     private final UserRepository userRepository;
     private final OrderMedicineRepository orderMedicineRepository;
+    private final OrderRepository orderRepository;
 
-    public CartServiceImpl(UserRepository userRepository, OrderMedicineRepository orderMedicineRepository) {
+    public CartServiceImpl(UserRepository userRepository, OrderMedicineRepository orderMedicineRepository, OrderRepository orderRepository) {
         this.userRepository = userRepository;
         this.orderMedicineRepository = orderMedicineRepository;
+        this.orderRepository = orderRepository;
     }
     @Override
     public OrderDto getCartContents(int userId) {
@@ -34,6 +38,7 @@ public class CartServiceImpl implements CartService {
         for (OrderMedicine orderMedicine : orderMedicines) {
             Medicine medicine = orderMedicine.getMedicine();
             OrderMedicineDto orderMedicineDto = new OrderMedicineDto(
+                    medicine.getId(),
                     medicine.getMedicineName(),
                     medicine.getManufacturer(),
                     medicine.getPrice(),
@@ -63,5 +68,18 @@ public class CartServiceImpl implements CartService {
             }
         }
         return true;
+    }
+
+    @Override
+    public void removeItemFromCart(int userId, int medicineId) {
+        OrderMedicine orderMedicine = orderMedicineRepository.findByOrder_User_IdAndMedicine_Id(userId, medicineId);
+        if (orderMedicine != null) {
+            Order order = orderMedicine.getOrder();
+            orderMedicineRepository.delete(orderMedicine);
+            List<OrderMedicine> remainingOrderMedicines = orderMedicineRepository.findAllByOrder(order);
+            if (remainingOrderMedicines.isEmpty()) {
+                orderRepository.delete(order);
+            }
+        }
     }
 }
