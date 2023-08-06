@@ -56,8 +56,16 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Override
     public boolean isReceiptProvided(int patientId, int medicineId, int quantity){
-        Integer sum = receiptRepository.sumQuantityByMedicineIdAndPatientId(patientId, medicineId);
-        return sum != null && sum >= quantity;
+//        Integer sum = receiptRepository.sumQuantityByMedicineIdAndPatientId(patientId, medicineId);
+//        return sum != null && sum >= quantity;
+
+        List<Receipt> receipts = receiptRepository.findAllByPatientIdAndMedicineId(patientId, medicineId);
+
+        int sum = receipts.stream()
+                .mapToInt(Receipt::getQuantity)
+                .sum();
+
+        return sum >= quantity;
     }
 
     @Override

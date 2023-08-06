@@ -73,7 +73,7 @@ public class MedicineServiceImpl implements MedicineService {
                         .orElseGet(() -> new OrderMedicine(order, medicine, 0, null));
                 orderMedicine.setQuantity(orderMedicine.getQuantity() + quantity);
                 order.addOrderMedicine(orderMedicine);
-                ReceiptStatus receiptStatus = obtainReceiptStatus(userId, medicineId, quantity);
+                ReceiptStatus receiptStatus = obtainReceiptStatus(userId, medicineId, orderMedicine.getQuantity() + quantity);
                 orderMedicine.setReceiptStatus(receiptStatus);
                 if(receiptStatus.equals(ReceiptStatus.RECEIPT_NEEDED)){
                     receiptService.requestReceipt(userId, medicineId, quantity);

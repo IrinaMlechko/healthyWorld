@@ -14,6 +14,9 @@ public interface ReceiptRepository extends JpaRepository<Receipt, Integer> {
     @Query("SELECT r FROM Receipt r WHERE r.doctor IS NULL")
     List<Receipt> findAllOpenedReceipts();
 
-    @Query("SELECT SUM(r.quantity) FROM Receipt r WHERE r.medicine.id = :medicineId AND r.patient.id = :patientId AND r.doctor IS NOT NULL")
-    Integer sumQuantityByMedicineIdAndPatientId(@Param("medicineId") int medicineId, @Param("patientId") int patientId);
+//    @Query("SELECT SUM(r.quantity) FROM Receipt r WHERE r.medicine.id = :medicineId AND r.patient.id = :patientId AND r.doctor IS NOT NULL")
+//    Integer sumQuantityByMedicineIdAndPatientId(@Param("medicineId") int medicineId, @Param("patientId") int patientId);
+@Query("SELECT r FROM Receipt r WHERE r.patient.id = :patientId AND r.medicine.id = :medicineId AND r.doctor.id IS NOT NULL")
+List<Receipt> findAllByPatientIdAndMedicineId(@Param("patientId") int patientId, @Param("medicineId") int medicineId);
+
 }
