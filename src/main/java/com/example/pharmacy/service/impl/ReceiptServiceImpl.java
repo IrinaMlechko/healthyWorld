@@ -8,8 +8,7 @@ import com.example.pharmacy.mapper.ReceiptMapper;
 import com.example.pharmacy.repository.ReceiptRepository;
 import com.example.pharmacy.repository.UserRepository;
 import com.example.pharmacy.service.ReceiptService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +16,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class ReceiptServiceImpl implements ReceiptService {
-    static Logger logger = LogManager.getLogger();
+
     private final ReceiptRepository receiptRepository;
     private final UserRepository userRepository;
     private final ReceiptMapper receiptMapper;
@@ -31,7 +31,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Override
     public List<ReceiptDto> findAllOpenedReceipts() {
-        logger.info("Get all opened receipts");
+        log.info("Get all opened receipts");
         List<Receipt> openedReceipts = receiptRepository.findAllOpenedReceipts();
         return openedReceipts.stream()
                 .map(receiptMapper::toDto)
@@ -47,17 +47,10 @@ public class ReceiptServiceImpl implements ReceiptService {
         receipt.setDoctor(doctor);
         receiptRepository.save(receipt);
     }
-
-//    @Override
-//    public void addMedicine(Medicine medicine) {
-//        logger.info("Add medicine: " + medicine.getMedicineName());
-//        medicineRepository.save(medicine);
-//    }
-//
-//    @Override
-//    public void deleteMedicine(int id) {
-//        logger.info("Delete medicine with id: " + id);
-//        medicineRepository.deleteById(id);
-//    }
+    @Override
+    public boolean isReceiptProvided(int patientId, int medicineId, int quantity){
+        Integer sum = receiptRepository.sumQuantityByMedicineIdAndPatientId(patientId, medicineId);
+        return sum != null && sum > quantity;
+    }
 
 }

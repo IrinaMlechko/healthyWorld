@@ -46,10 +46,10 @@ public class MedicineController {
     @PostMapping("/buy/{medicineId}")
     public String buyMedicine(@PathVariable int medicineId, HttpSession session) {
         Integer orderId = (Integer) session.getAttribute("orderId");
+        User user = null;
+        int userId = (int) session.getAttribute("userId");
         if (orderId == null) {
-            int userId = (int) session.getAttribute("userId");
             Optional<User> userOptional = userService.findUserById(userId);
-            User user;
             if (userOptional.isEmpty()) {
                 return "redirect:/";
             } else {
@@ -63,7 +63,7 @@ public class MedicineController {
             }
             session.setAttribute("orderId", orderId);
         }
-        medicineService.addMedicineToOrder(orderId, medicineId, 1);
+        medicineService.addMedicineToOrder(orderId, medicineId, 1, userId);
         return "redirect:/catalog";
     }
 }

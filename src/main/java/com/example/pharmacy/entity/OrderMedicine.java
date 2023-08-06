@@ -1,5 +1,6 @@
 package com.example.pharmacy.entity;
 
+import com.example.pharmacy.util.ReceiptStatus;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -32,10 +33,11 @@ public class OrderMedicine {
     @Column(name = "quantity")
     private Integer quantity;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "receipt_status")
-    private String receiptStatus;
+    private ReceiptStatus receiptStatus;
 
-    public OrderMedicine (Order order, Medicine medicine, Integer quantity, String receiptStatus){
+    public OrderMedicine (Order order, Medicine medicine, Integer quantity, ReceiptStatus receiptStatus){
         this.id = new OrderMedicineId(order.getId(), medicine.getId());
         this.order = order;
         this.medicine = medicine;

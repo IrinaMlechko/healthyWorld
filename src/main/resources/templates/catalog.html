@@ -29,6 +29,7 @@
                 <th>Manufacturer</th>
                 <th>Price</th>
                 <th>Description</th>
+                <th>Prescription Status</th>
             </tr>
             </thead>
             <tbody>
@@ -37,6 +38,8 @@
                 <td th:text="${medicine.manufacturer}"></td>
                 <td th:text="${medicine.price}"></td>
                 <td th:text="${medicine.description}"></td>
+                <td th:if="${medicine.prescriptionRequired}" style="color: red;">Prescription Needed</td>
+                <td th:unless="${medicine.prescriptionRequired}" style="color: green;">No Prescription Needed</td>
                 <td>
                     <form th:action="@{'/buy/' + ${medicine.id}}" method="post" th:object="${medicine}">
                         <input type="submit" value="Add to cart" class="btn btn-primary"/>
