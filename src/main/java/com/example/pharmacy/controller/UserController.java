@@ -9,6 +9,7 @@ import com.example.pharmacy.exception.UserWithThisLoginAlreadyExists;
 import com.example.pharmacy.service.UserService;
 import com.example.pharmacy.util.Role;
 import com.example.pharmacy.util.Validator;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,10 @@ public class UserController {
     public String indexPage() {
         return "index";
     }
+    @GetMapping("/login")
+    public String login() {
+        return "index";
+    }
 
     @PostMapping("/login")
     public String login(@RequestParam("login") String login,
@@ -50,7 +55,7 @@ public class UserController {
                 session.setAttribute("userName", firstName);
                 session.setAttribute("role", role);
                 session.setAttribute("userId", userId);
-                return "redirect:/catalog";
+                return "redirect:/main";
             } else {
                 model.addAttribute("loginFailed", true);
                 return "redirect:/index";
@@ -62,7 +67,9 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public String logout() {
+    public String logout(HttpServletRequest request) {
+        request.getSession().removeAttribute("userName");
+        request.getSession().removeAttribute("role");
         return "redirect:/";
     }
 

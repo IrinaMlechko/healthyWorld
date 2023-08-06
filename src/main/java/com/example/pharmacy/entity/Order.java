@@ -3,6 +3,7 @@ package com.example.pharmacy.entity;
 import com.example.pharmacy.util.Status;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.ReadOnlyProperty;
@@ -15,10 +16,11 @@ import java.util.List;
 @Table(name = "orders")
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @DynamicUpdate
+@DynamicInsert
 public class Order extends BaseEntity {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -35,6 +37,10 @@ public class Order extends BaseEntity {
     @ReadOnlyProperty
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public void addOrderMedicine (OrderMedicine orderMedicine){
         orderMedicines.add(orderMedicine);

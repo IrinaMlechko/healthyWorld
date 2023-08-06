@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface UserService {
     Optional<User>  authenticate(String userName, String password) throws ServiceException;
 
-    Optional<User> findUserByLogin(String login) throws ServiceException;
+    Optional<User> findUserByLogin(String login);
 
     boolean existsByLogin(String login) throws ServiceException;
 

@@ -9,13 +9,13 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(name = "order_medicine")
+@Table(name = "order_medicines")
 @EntityListeners(AuditingEntityListener.class)
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode
 @Setter
 @NoArgsConstructor
 @DynamicUpdate
-public class OrderMedicine extends BaseEntity {
+public class OrderMedicine {
 
     @EmbeddedId
     private OrderMedicineId id;

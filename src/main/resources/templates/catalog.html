@@ -38,7 +38,7 @@
                 <td th:text="${medicine.price}"></td>
                 <td th:text="${medicine.description}"></td>
                 <td>
-                    <form th:action="@{'/buy/' + ${medicine.id}}" method="post">
+                    <form th:action="@{'/buy/' + ${medicine.id}}" method="post" th:object="${medicine}">
                         <input type="submit" value="Add to cart" class="btn btn-primary"/>
                     </form>
                 </td>
