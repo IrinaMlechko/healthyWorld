@@ -46,8 +46,10 @@ public class UserController {
             if (userOptional.isPresent()){
                 String firstName = userOptional.get().getFirstName();
                 Role role = userOptional.get().getCredentials().getRole();
+                int userId = userOptional.get().getId();
                 session.setAttribute("userName", firstName);
                 session.setAttribute("role", role);
+                session.setAttribute("userId", userId);
                 return "redirect:/catalog";
             } else {
                 model.addAttribute("loginFailed", true);

@@ -19,7 +19,7 @@
 <div class="content">
     <h1>Receipts</h1>
     <th:block th:if="${#lists.isEmpty(receipts)}">
-        <p class="no-receipts-message">No receipts found.</p>
+        <p class="no-receipts-message">There are no receipts to confirm.</p>
     </th:block>
     <th:block th:unless="${#lists.isEmpty(receipts)}">
         <table class="table table-bordered">
@@ -41,6 +41,11 @@
                 <td th:text="${receipt.patientLastName}"></td>
                 <td th:text="${receipt.patientsDateOfBirth}"></td>
                 <td th:text="${receipt.quantity}"></td>
+                <td>
+                    <form th:action="@{'/confirm/' + ${receipt.id}}" method="post">
+                        <input type="submit" value="Confirm" class="btn btn-primary"/>
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>

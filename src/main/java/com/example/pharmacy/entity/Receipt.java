@@ -17,6 +17,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class Receipt extends BaseEntity {
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "medicine_id")
     private Medicine medicine;

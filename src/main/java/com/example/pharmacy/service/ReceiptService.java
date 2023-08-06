@@ -9,4 +9,5 @@ import java.util.List;
 public interface ReceiptService {
     List<ReceiptDto> findAllOpenedReceipts() throws ServiceException;
 
+    void confirmReceipt(int receiptId, int doctorId) throws ServiceException;
 }

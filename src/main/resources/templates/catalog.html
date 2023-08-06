@@ -37,6 +37,11 @@
                 <td th:text="${medicine.manufacturer}"></td>
                 <td th:text="${medicine.price}"></td>
                 <td th:text="${medicine.description}"></td>
+                <td>
+                    <form th:action="@{'/buy/' + ${medicine.id}}" method="post">
+                        <input type="submit" value="Add to cart" class="btn btn-primary"/>
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>

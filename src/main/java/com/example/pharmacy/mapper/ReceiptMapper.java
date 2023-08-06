@@ -16,6 +16,7 @@ public class ReceiptMapper {
         }
 
         ReceiptDto dto = new ReceiptDto();
+        dto.setId(receipt.getId());
         dto.setMedicineName(receipt.getMedicine().getMedicineName());
         dto.setPatientFirstName(receipt.getPatient().getFirstName());
         dto.setPatientLastName(receipt.getPatient().getLastName());
