@@ -12,4 +12,6 @@ public interface ReceiptService {
     void confirmReceipt(int receiptId, int doctorId) throws ServiceException;
 
     boolean isReceiptProvided(int patientId, int medicineId, int quantity);
+
+    void requestReceipt(int userId, int medicineId, int quantity);
 }

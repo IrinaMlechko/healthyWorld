@@ -73,8 +73,11 @@ public class MedicineServiceImpl implements MedicineService {
 
                 orderMedicine.setQuantity(orderMedicine.getQuantity() + quantity);
                 order.addOrderMedicine(orderMedicine);
-                orderMedicine.setReceiptStatus(obtainReceiptStatus(userId, medicineId, quantity));
-
+                ReceiptStatus receiptStatus = obtainReceiptStatus(userId, medicineId, quantity);
+                orderMedicine.setReceiptStatus(receiptStatus);
+                if(receiptStatus.equals(ReceiptStatus.RECEIPT_NEEDED)){
+                    receiptService.requestReceipt(userId, medicineId, quantity);
+                }
                 orderRepository.save(order);
                 orderMedicineRepository.save(orderMedicine);
             });
