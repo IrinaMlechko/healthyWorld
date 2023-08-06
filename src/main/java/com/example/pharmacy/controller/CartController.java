@@ -46,5 +46,12 @@ public class CartController {
         cartService.removeItemFromCart(userId, medicineId);
         return "redirect:/cart";
     }
+
+    @PostMapping("/update/{medicineId}")
+    public String updateItemQuantity(@PathVariable int medicineId, @RequestParam int quantity, HttpSession session) {
+        int userId = (int) session.getAttribute("userId");
+        cartService.updateItemQuantity(userId, medicineId, quantity);
+        return "redirect:/cart";
+    }
 }
 

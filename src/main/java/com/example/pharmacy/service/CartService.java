@@ -7,4 +7,6 @@ public interface CartService {
     boolean isReadyToBuy();
 
     void removeItemFromCart(int userId, int medicineId);
+
+    void updateItemQuantity(int userId, int medicineId, int quantity);
 }

@@ -6,6 +6,7 @@
     <link rel="icon" href="https://yt3.ggpht.com/ytc/AMLnZu-0bY4NaExphby-ARMZtEXnhrE0VVrzYqo2H1I=s900-c-k-c0x00ffffff-no-rj"
           type="image/jpeg">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.1/css/bootstrap.min.css">
 </head>
 <body>
 <div class="header">
@@ -40,7 +41,10 @@
                 <td th:text="${medicine.manufacturer}"></td>
                 <td th:text="${medicine.price}"></td>
                 <td>
-                    <input type="number" min="1" th:value="${medicine.quantity}" th:field="*{orderDto.orderMedicines[__${rowStat.index}__].quantity}"/>
+                    <form th:action="@{'/cart/update/' + ${medicine.medicineId}}" method="post">
+                        <input type="number" min="0" th:value="${medicine.quantity}" name="quantity" />
+                        <input type="submit" value="Update" class="btn btn-primary"/>
+                    </form>
                 </td>
                 <td th:text="${medicine.receiptStatus}"></td>
                 <td>

@@ -82,4 +82,17 @@ public class CartServiceImpl implements CartService {
             }
         }
     }
+
+    @Override
+    public void updateItemQuantity(int userId, int medicineId, int quantity) {
+        OrderMedicine orderMedicine = orderMedicineRepository.findByOrder_User_IdAndMedicine_Id(userId, medicineId);
+        if (orderMedicine != null) {
+            if (quantity <= 0) {
+                removeItemFromCart(userId, medicineId);
+            } else {
+                orderMedicine.setQuantity(quantity);
+                orderMedicineRepository.save(orderMedicine);
+            }
+        }
+    }
 }
