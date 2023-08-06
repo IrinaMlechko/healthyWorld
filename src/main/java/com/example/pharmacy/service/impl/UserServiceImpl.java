@@ -47,11 +47,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findUserByLogin(String login) {
-        log.info("Get name for the user with login " + login);
+        log.info("Get user with login " + login);
         Optional<User> userOptional = userRepository.findByCredentials_Login(login);
         return userOptional;
     }
 
+    @Override
+    public Optional<User> findUserById(int id) {
+        log.info("Get user with id " + id);
+        Optional<User> userOptional = userRepository.findById(id);
+        return userOptional;
+    }
     @Override
     public boolean existsByLogin(String login) {
         log.info("Check if user " + login + " already exists.");

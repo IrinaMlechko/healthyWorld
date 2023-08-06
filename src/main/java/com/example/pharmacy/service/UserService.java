@@ -16,6 +16,8 @@ public interface UserService {
 
     Optional<User> findUserByLogin(String login);
 
+    Optional<User> findUserById(int id);
+
     boolean existsByLogin(String login) throws ServiceException;
 
     void createUser(User user) throws ServiceException;

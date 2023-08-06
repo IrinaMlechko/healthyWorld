@@ -1,9 +1,6 @@
 package com.example.pharmacy.service.impl;
 
-import com.example.pharmacy.entity.Medicine;
-import com.example.pharmacy.entity.Order;
-import com.example.pharmacy.entity.OrderMedicine;
-import com.example.pharmacy.entity.User;
+import com.example.pharmacy.entity.*;
 import com.example.pharmacy.repository.MedicineRepository;
 import com.example.pharmacy.repository.OrderMedicineRepository;
 import com.example.pharmacy.repository.OrderRepository;
@@ -14,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class MedicineServiceImpl implements MedicineService {
     static Logger logger = LogManager.getLogger();
@@ -49,8 +48,6 @@ public class MedicineServiceImpl implements MedicineService {
     }
     public Integer createOrder(User user) {
         Order order = new Order();
-        // Set delivery address, status, and other order details if needed
-        // ...
         order.setUser(user);
         order.setStatus(Status.NEW);
         order = orderRepository.save(order);
@@ -58,12 +55,22 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     public void addMedicineToOrder(Integer orderId, int medicineId, int quantity) {
-        Medicine medicine = medicineRepository.findById(medicineId).orElse(null);
-        if (medicine != null) {
-            Order order = orderRepository.findById(orderId).orElse(null);
-            if (order != null) {
-                OrderMedicine orderMedicine = new OrderMedicine(order, medicine, quantity, "NEW");
-                order.addOrderMedicine(orderMedicine);orderRepository.save(order);
+        Optional<Medicine> medicineOptional = medicineRepository.findById(medicineId);
+        if (medicineOptional.isPresent()) {
+            Medicine medicine = medicineOptional.get();
+            Optional<Order> orderOptional = orderRepository.findById(orderId);
+            if (orderOptional.isPresent()) {
+                Order order = orderOptional.get();
+                Optional<OrderMedicine> orderMedicineOptional = orderMedicineRepository.findById(new OrderMedicineId(orderId, medicineId));
+                OrderMedicine orderMedicine;
+                if(orderMedicineOptional.isEmpty()){
+                    orderMedicine = new OrderMedicine(order, medicine, quantity, null);
+                    order.addOrderMedicine(orderMedicine);
+                    orderRepository.save(order);
+                } else{
+                    orderMedicine = orderMedicineOptional.get();
+                    orderMedicine.setQuantity(orderMedicine.getQuantity()+quantity);
+                }
                 orderMedicineRepository.save(orderMedicine);
             }
         }

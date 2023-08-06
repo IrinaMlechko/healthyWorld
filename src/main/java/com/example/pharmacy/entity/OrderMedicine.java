@@ -13,6 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @EqualsAndHashCode
 @Setter
+@Getter
 @NoArgsConstructor
 @DynamicUpdate
 public class OrderMedicine {
