@@ -85,5 +85,9 @@ public class ReceiptServiceImpl implements ReceiptService {
     public Optional<Receipt> findReceiptById(int id){
         return receiptRepository.findById(id);
     }
+    @Override
+    public List<Receipt> findByPatientIdAndMedicineId(int userId, int medicineId){
+        return receiptRepository.findAllByPatientIdAndMedicineId(userId, medicineId);
+    };
 
 }
