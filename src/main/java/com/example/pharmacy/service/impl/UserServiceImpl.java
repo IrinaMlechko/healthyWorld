@@ -66,11 +66,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(User user) {
+        log.info("Creating new user");
         userRepository.save(user);
     }
 
     @Override
     public void createCredentials(Credentials credentials) throws ServiceException, NoSuchAlgorithmException {
+        log.info("Creating credentials for a new user");
         if (!Validator.validateUsername(credentials.getLogin())) {
             throw new ServiceException("Invalid username.");
         }

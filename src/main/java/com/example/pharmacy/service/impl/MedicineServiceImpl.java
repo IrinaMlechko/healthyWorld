@@ -8,7 +8,6 @@ import com.example.pharmacy.service.MedicineService;
 import com.example.pharmacy.service.ReceiptService;
 import com.example.pharmacy.util.ReceiptStatus;
 import com.example.pharmacy.util.Status;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -46,18 +45,8 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
-    public void addMedicine(Medicine medicine) {
-        log.info("Add medicine: " + medicine.getMedicineName());
-        medicineRepository.save(medicine);
-    }
-
-    @Override
-    public void deleteMedicine(int id) {
-        log.info("Delete medicine with id: " + id);
-        medicineRepository.deleteById(id);
-    }
-    @Override
     public Integer createOrder(User user) {
+        log.info("Creating order for user with ID: {}", user.getId());
         Order order = new Order();
         order.setUser(user);
         order.setStatus(Status.NEW);
@@ -66,6 +55,7 @@ public class MedicineServiceImpl implements MedicineService {
     }
     @Override
     public void addMedicineToOrder(Integer orderId, int medicineId, int quantity, int userId) {
+        log.info("Adding medicine with ID {} to order with ID {} for user with ID {} and quantity {}.", medicineId, orderId, userId, quantity);
         medicineRepository.findById(medicineId).ifPresent(medicine -> {
             orderRepository.findById(orderId).ifPresent(order -> {
                 OrderMedicineId orderMedicineId = new OrderMedicineId(orderId, medicineId);
@@ -83,7 +73,9 @@ public class MedicineServiceImpl implements MedicineService {
             });
         });
     }
+    @Override
     public void refreshReceiptsStatus(int receiptId) {
+        log.info("Refreshing receipts status for receipt with ID: {}", receiptId);
         Optional<Receipt> receiptOptional = receiptService.findReceiptById(receiptId);
         receiptOptional.ifPresentOrElse(
                 receipt -> {
@@ -102,8 +94,9 @@ public class MedicineServiceImpl implements MedicineService {
                 }
         );
     }
-
+   @Override
     public ReceiptStatus obtainReceiptStatus(int patientId, int medicineId, int quantity) {
+        log.info("Obtaining receipt status for patient with ID {}, medicine with ID {}, and quantity {}.", patientId, medicineId, quantity);
         Optional<Medicine> medicineOptional = findById(medicineId);
         if (medicineOptional.isPresent()) {
             Medicine medicine = medicineOptional.get();

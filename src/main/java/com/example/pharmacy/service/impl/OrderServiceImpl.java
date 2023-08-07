@@ -24,7 +24,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Optional<Order> findByUserId(int id) {
-        log.info("Find user by id: " + id);
+        log.info("Find order by user id: " + id);
         Optional<Order> orderOptional = Optional.empty();
         List<Order> orders = orderRepository.findAllByUserIdAndStatusOrderByCreatedAt(id, Status.NEW);
         if(!orders.isEmpty()){
@@ -35,12 +35,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order updateOrderStatus(Order order, Status status) {
+            log.info(String.format("Updating status to %s for order with id: ", status, order.getId());
             order.setStatus(status);
             return orderRepository.save(order);
     }
 
     @Override
     public Order findById(int orderId) {
+        log.info("Find order by id: " + orderId);
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         if (optionalOrder.isPresent()) {
             return optionalOrder.get();

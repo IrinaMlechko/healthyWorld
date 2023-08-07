@@ -15,6 +15,7 @@ import com.example.pharmacy.service.OrderService;
 import com.example.pharmacy.service.ReceiptService;
 import com.example.pharmacy.util.ReceiptStatus;
 import com.example.pharmacy.util.Status;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.ArrayUtils;
 
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class CartServiceImpl implements CartService {
 
     private final UserRepository userRepository;
@@ -41,6 +43,7 @@ public class CartServiceImpl implements CartService {
     }
     @Override
     public OrderDto getCartContents(int userId) {
+        log.info("Getting cart contents for user with ID: {}", userId);
         Optional<Order> order = orderService.findByUserId(userId);
         List<OrderMedicineDto> orderMedicineDtos = new ArrayList<>();
         BigDecimal totalPrice = BigDecimal.ZERO;
@@ -78,6 +81,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean isReadyToBuy(int orderId){
+        log.info("Checking if order with ID {} is ready to buy.", orderId);
         ReceiptStatus[] statusesToCheck = {ReceiptStatus.NO_RECEIPT_NEEDED, ReceiptStatus.RECEIPT_PROVIDED};
         List<OrderMedicine> orderMedicines = orderMedicineRepository.findAllByOrder_Id(orderId);
         for (OrderMedicine orderMedicine : orderMedicines) {
@@ -90,6 +94,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void removeItemFromCart(int userId, int medicineId) {
+        log.info("Removing medicine with ID {} from cart for user with ID: {}", medicineId, userId);
         OrderMedicine orderMedicine = orderMedicineRepository.findByOrder_User_IdAndMedicine_IdAndOrder_Status(userId, medicineId, Status.NEW);
         if (orderMedicine != null) {
             Order order = orderMedicine.getOrder();
@@ -103,6 +108,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void updateItemQuantity(int userId, int medicineId, int quantity) {
+        log.info("Updating quantity of medicine with ID {} in cart for user with ID: {} to {}", medicineId, userId, quantity);
         OrderMedicine orderMedicine = orderMedicineRepository.findByOrder_User_IdAndMedicine_IdAndOrder_Status(userId, medicineId, Status.NEW);
         if (orderMedicine != null) {
             if (quantity <= 0) {
@@ -115,6 +121,7 @@ public class CartServiceImpl implements CartService {
     }
     @Override
     public int getOrderId(int userId) throws NoActiveOrderFoundException {
+        log.info("Getting order ID for user with ID: {}", userId);
         Optional<Order> orderOptional = orderRepository.findByUser_IdAndStatus(userId, Status.NEW);
         if (orderOptional.isEmpty()) {
             throw new NoActiveOrderFoundException("Error occurred: no active order found for user with id:" + userId);
@@ -123,6 +130,7 @@ public class CartServiceImpl implements CartService {
     }
     @Override
     public void completePurchase(int orderId) {
+        log.info("Completing purchase for order with ID: {}", orderId);
         Order order = orderService.findById(orderId);
         int userId = order.getUser().getId();
 
