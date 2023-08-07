@@ -58,11 +58,11 @@ public class UserController {
                 return "redirect:/main";
             } else {
                 model.addAttribute("loginFailed", true);
-                return "redirect:/index";
+                return "index";
             }
         } catch (ServiceException e) {
             model.addAttribute("errorMsg", e.getLocalizedMessage());
-            return "error_500";
+            return "error";
         }
     }
 
