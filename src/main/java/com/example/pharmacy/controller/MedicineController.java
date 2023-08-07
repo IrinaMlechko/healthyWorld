@@ -37,14 +37,14 @@ public class MedicineController {
         return "catalog";
     }
 
-    @GetMapping("/buy/{medicineId}")
+    @GetMapping("/addToCart/{medicineId}")
     public String buyMedicinePage(@PathVariable int medicineId, Model model) {
         model.addAttribute("medicineId", medicineId);
-        return "buy_medicine";
+        return "add_medicine_to_cart";
     }
 
-    @PostMapping("/buy/{medicineId}")
-    public String buyMedicine(@PathVariable int medicineId, HttpSession session) {
+    @PostMapping("/addToCart/{medicineId}")
+    public String addMedicineToCart(@PathVariable int medicineId, HttpSession session) {
         Integer orderId = (Integer) session.getAttribute("orderId");
         User user = null;
         int userId = (int) session.getAttribute("userId");
