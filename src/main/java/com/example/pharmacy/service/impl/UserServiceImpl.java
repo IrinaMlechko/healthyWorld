@@ -48,15 +48,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findUserByLogin(String login) {
         log.info("Get user with login " + login);
-        Optional<User> userOptional = userRepository.findByCredentials_Login(login);
-        return userOptional;
+        return userRepository.findByCredentials_Login(login);
     }
 
     @Override
     public Optional<User> findUserById(int id) {
         log.info("Get user with id " + id);
-        Optional<User> userOptional = userRepository.findById(id);
-        return userOptional;
+        return userRepository.findById(id);
     }
     @Override
     public boolean existsByLogin(String login) {
@@ -82,7 +80,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerUser(UserDto userDto) throws NotValidLoginException, UserWithThisLoginAlreadyExists, IncorrectDataOfBirthFormat {
+    public void registerUser(UserDto userDto) throws NotValidLoginException, UserWithThisLoginAlreadyExists, IncorrectDataOfBirthFormat, ServiceException {
         String login = userDto.getLogin();
         if (!Validator.validateUsername(login)) {
             throw new NotValidLoginException();

@@ -4,30 +4,31 @@
     <title>Your service</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="icon" href="https://yt3.ggpht.com/ytc/AMLnZu-0bY4NaExphby-ARMZtEXnhrE0VVrzYqo2H1I=s900-c-k-c0x00ffffff-no-rj"
-          type="image/jpeg">
+          type="image/png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-
 </head>
 <body>
-<br/>
-<form th:action="@{/login}" method="post">
-    <input type="hidden" name="command" value="login"/>
-    <label for="login">Login:</label>
-    <br/>
-    <input type="text" name="login" id="login" value=""/>
-    <br/>
-    <label for="password">Password:</label>
-    <br/>
-    <input type="password" name="password" id="password" value=""/>
-    <br/>
-    <input type="submit" name="submit" value="Submit"/>
-    <br/>
-    <br/>
-    <span th:if="${loginFailed}" style="color: red">Incorrect login or password. Please try again!</span>
-</form>
-<br/>
-<form th:action="@{/registration}">
-    <p>Not a user yet? <a href="registration">Sign up</a></p>
-</form>
+<div class="main-form">
+    <form th:action="@{/login}" method="post">
+        <input type="hidden" name="command" value="login"/>
+        <label for="login">Login:</label>
+        <br/>
+        <input type="text" name="login" id="login" value=""/>
+        <br/>
+        <label for="password">Password:</label>
+        <br/>
+        <input type="password" name="password" id="password" value=""/>
+        <br/>
+        <input type="submit" name="submit" value="Submit"/>
+        <br/>
+        <br/>
+        <span th:if="${loginFailed}">Incorrect login or password. Please try again!</span>
+    </form>
+</div>
+<div class="not-a-user-link">
+    <form th:action="@{/registration}">
+        <p>Not a user yet? <a href="registration">Sign up</a></p>
+    </form>
+</div>
 </body>
 </html>

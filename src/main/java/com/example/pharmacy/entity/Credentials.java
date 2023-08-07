@@ -4,7 +4,6 @@ import com.example.pharmacy.util.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Objects;
 @Entity
 @Table(name = "credentials")
 @Getter

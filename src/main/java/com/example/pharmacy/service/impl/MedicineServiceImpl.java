@@ -34,8 +34,7 @@ public class MedicineServiceImpl implements MedicineService {
     @Override
     public List<Medicine> findAll() {
         log.info("Get all medicines");
-        List<Medicine> medicines = medicineRepository.findAll();
-        return medicines;
+        return medicineRepository.findAll();
     }
 
     @Override

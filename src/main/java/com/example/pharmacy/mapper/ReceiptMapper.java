@@ -2,9 +2,6 @@ package com.example.pharmacy.mapper;
 
 import com.example.pharmacy.dto.ReceiptDto;
 import com.example.pharmacy.entity.Receipt;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
 import org.springframework.stereotype.Component;
 
 @Component

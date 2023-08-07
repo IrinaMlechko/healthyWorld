@@ -1,10 +1,5 @@
 package com.example.pharmacy.dto;
 
-import com.example.pharmacy.entity.Medicine;
-import com.example.pharmacy.entity.User;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

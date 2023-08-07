@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 @Entity
 @Table(name = "medicines")
 @Getter
@@ -41,12 +41,12 @@ public class Medicine extends BaseEntity {
     @OneToMany(mappedBy = "medicine", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderMedicine> orderMedicines = new ArrayList<>();
 
-    public void addOrderMedicine (OrderMedicine orderMedicine){
+    public void addOrderMedicine(OrderMedicine orderMedicine) {
         orderMedicines.add(orderMedicine);
         orderMedicine.setMedicine(this);
     }
 
-    public void removeOrderMedicine (OrderMedicine orderMedicine){
+    public void removeOrderMedicine(OrderMedicine orderMedicine) {
         orderMedicines.remove(orderMedicine);
         orderMedicine.setMedicine(null);
     }

@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.pharmacy.constant.AttributeName.*;
+import static com.example.pharmacy.constant.PageName.CATALOG_PAGE;
+
 @Controller
 public class MedicineController {
 
@@ -24,7 +27,7 @@ public class MedicineController {
     private final UserService userService;
     private final OrderService orderService;
 
-    public MedicineController(MedicineService medicineService, UserService userService, OrderService orderService) throws ServiceException {
+    public MedicineController(MedicineService medicineService, UserService userService, OrderService orderService){
         this.medicineService = medicineService;
         this.userService = userService;
         this.orderService = orderService;
@@ -33,21 +36,21 @@ public class MedicineController {
     @GetMapping(path = "/catalog")
     public String findAllMedicines(Model model, HttpSession session) throws ServiceException {
         List<Medicine> medicines = medicineService.findAll();
-        model.addAttribute("medicines", medicines);
-        return "catalog";
+        model.addAttribute(MEDICINES, medicines);
+        return CATALOG_PAGE;
     }
 
     @GetMapping("/addToCart/{medicineId}")
     public String buyMedicinePage(@PathVariable int medicineId, Model model) {
-        model.addAttribute("medicineId", medicineId);
+        model.addAttribute(MEDICINE_ID, medicineId);
         return "add_medicine_to_cart";
     }
 
     @PostMapping("/addToCart/{medicineId}")
     public String addMedicineToCart(@PathVariable int medicineId, HttpSession session) {
-        Integer orderId = (Integer) session.getAttribute("orderId");
+        Integer orderId = (Integer) session.getAttribute(ORDER_ID);
         User user = null;
-        int userId = (int) session.getAttribute("userId");
+        int userId = (int) session.getAttribute(USER_ID);
         if (orderId == null) {
             Optional<User> userOptional = userService.findUserById(userId);
             if (userOptional.isEmpty()) {
@@ -61,7 +64,7 @@ public class MedicineController {
             } else {
                 orderId = orderOptional.get().getId();
             }
-            session.setAttribute("orderId", orderId);
+            session.setAttribute(ORDER_ID, orderId);
         }
         medicineService.addMedicineToOrder(orderId, medicineId, 1, userId);
         return "redirect:/catalog";

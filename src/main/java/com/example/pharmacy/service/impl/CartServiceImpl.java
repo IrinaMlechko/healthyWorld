@@ -28,14 +28,12 @@ import java.util.Optional;
 @Slf4j
 public class CartServiceImpl implements CartService {
 
-    private final UserRepository userRepository;
     private final OrderMedicineRepository orderMedicineRepository;
     private final OrderRepository orderRepository;
     private final OrderService orderService;
     private final ReceiptService receiptService;
 
-    public CartServiceImpl(UserRepository userRepository, OrderMedicineRepository orderMedicineRepository, OrderRepository orderRepository, OrderService orderService, ReceiptService receiptService) {
-        this.userRepository = userRepository;
+    public CartServiceImpl(OrderMedicineRepository orderMedicineRepository, OrderRepository orderRepository, OrderService orderService, ReceiptService receiptService) {
         this.orderMedicineRepository = orderMedicineRepository;
         this.orderRepository = orderRepository;
         this.orderService = orderService;

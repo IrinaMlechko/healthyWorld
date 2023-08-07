@@ -5,7 +5,7 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
-import java.util.Objects;
+
 @Entity
 @Table(name = "users")
 @Slf4j
@@ -27,6 +27,11 @@ public class User extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "credentials_id", nullable = false)
     private Credentials credentials;
+
+    public static Builder newBuilder() {
+        return new User().new Builder();
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("User{");
@@ -36,9 +41,7 @@ public class User extends BaseEntity {
         sb.append('}');
         return sb.toString();
     }
-    public static Builder newBuilder() {
-        return new User().new Builder();
-    }
+
     public class Builder {
 
         private Builder() {
@@ -63,10 +66,12 @@ public class User extends BaseEntity {
             User.this.dateOfBirth = dateOfBirth;
             return this;
         }
+
         public Builder setCredentials(Credentials credentials) {
             User.this.credentials = credentials;
             return this;
         }
+
         public User build() {
             return User.this;
         }

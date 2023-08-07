@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.example.pharmacy.constant.AttributeName.*;
+import static com.example.pharmacy.constant.PageName.BUY_SUCCESS_PAGE;
+import static com.example.pharmacy.constant.PageName.CART_PAGE;
+
 @Controller
 @RequestMapping("/cart")
 public class CartController {
@@ -29,39 +33,39 @@ public class CartController {
 
     @GetMapping
     public String viewCart(Model model, HttpSession session) {
-        int userId = (int) session.getAttribute("userId");
+        int userId = (int) session.getAttribute(USER_ID);
         OrderDto orderDto = cartService.getCartContents(userId);
-        model.addAttribute("orderDto", orderDto);
-        return "cart";
+        model.addAttribute(ORDER_DTO, orderDto);
+        return CART_PAGE;
     }
 
 
     @PostMapping("/buy")
     public String buyItems(Model model, HttpSession session) throws NoActiveOrderFoundException {
-        int userId = (int) session.getAttribute("userId");
+        int userId = (int) session.getAttribute(USER_ID);
         int orderId = cartService.getOrderId(userId);
         boolean isReadyToBuy = cartService.isReadyToBuy(userId);
         if (isReadyToBuy) {
             cartService.completePurchase(orderId);
-            session.removeAttribute("orderId");
-            return "buy_success";
+            session.removeAttribute(ORDER_ID);
+            return BUY_SUCCESS_PAGE;
         } else {
             String errorMsg = "Receipts required.";
-            model.addAttribute("errorMsg", errorMsg);
-            return "cart";
+            model.addAttribute(ERROR_MSG, errorMsg);
+            return CART_PAGE;
         }
     }
 
     @DeleteMapping("/remove/{medicineId}")
     public String removeItemFromCart(@PathVariable int medicineId, HttpSession session) {
-        int userId = (int) session.getAttribute("userId");
+        int userId = (int) session.getAttribute(USER_ID);
         cartService.removeItemFromCart(userId, medicineId);
         return "redirect:/cart";
     }
 
     @PostMapping("/update/{medicineId}")
     public String updateItemQuantity(@PathVariable int medicineId, @RequestParam int quantity, HttpSession session) {
-        int userId = (int) session.getAttribute("userId");
+        int userId = (int) session.getAttribute(USER_ID);
         cartService.updateItemQuantity(userId, medicineId, quantity);
         List<Receipt> receipts = receiptService.findByPatientIdAndMedicineId(userId, medicineId);
         if (!receipts.isEmpty()) {

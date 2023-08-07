@@ -1,5 +1,7 @@
 package com.example.pharmacy.util;
 
+import com.example.pharmacy.exception.ServiceException;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -8,12 +10,12 @@ public class PasswordEncryptor {
 
     public static final String ALGORITHM = "MD5";
 
-    public static String encryptPassword(String password){
+    public static String encryptPassword(String password) throws ServiceException {
         MessageDigest md = null;
         try {
             md = MessageDigest.getInstance(ALGORITHM);
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Password encryption failed.", e);
+            throw new ServiceException("Password encryption failed.", e);
         }
         md.update(password.getBytes());
         byte[] digest = md.digest();

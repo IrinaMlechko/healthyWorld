@@ -1,7 +1,5 @@
 package com.example.pharmacy.exception;
 
-import java.time.format.DateTimeParseException;
-
 public class IncorrectDataOfBirthFormat extends Throwable {
     public IncorrectDataOfBirthFormat() {
     }

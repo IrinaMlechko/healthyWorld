@@ -25,14 +25,12 @@ public class ReceiptServiceImpl implements ReceiptService {
     private final ReceiptRepository receiptRepository;
     private final UserRepository userRepository;
     private final MedicineRepository medicineRepository;
-    private final OrderMedicineRepository orderMedicineRepository;
     private final ReceiptMapper receiptMapper;
     @Autowired
-    private ReceiptServiceImpl(ReceiptRepository receiptRepository, UserRepository userRepository, MedicineRepository medicineRepository, OrderMedicineRepository orderMedicineRepository, ReceiptMapper receiptMapper) {
+    private ReceiptServiceImpl(ReceiptRepository receiptRepository, UserRepository userRepository, MedicineRepository medicineRepository, ReceiptMapper receiptMapper) {
         this.receiptRepository = receiptRepository;
         this.userRepository = userRepository;
         this.medicineRepository = medicineRepository;
-        this.orderMedicineRepository = orderMedicineRepository;
         this.receiptMapper = receiptMapper;
     }
 
@@ -42,7 +40,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         List<Receipt> openedReceipts = receiptRepository.findAllOpenedReceipts();
         return openedReceipts.stream()
                 .map(receiptMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
     @Override
     public void confirmReceipt(int receiptId, int doctorId) throws ServiceException {
