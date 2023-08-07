@@ -35,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order updateOrderStatus(Order order, Status status) {
-            log.info(String.format("Updating status to %s for order with id: ", status, order.getId());
+            log.info(String.format("Updating status to %s for order with id: ", status, order.getId()));
             order.setStatus(status);
             return orderRepository.save(order);
     }
