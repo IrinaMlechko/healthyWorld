@@ -56,9 +56,6 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Override
     public boolean isReceiptProvided(int patientId, int medicineId, int quantity){
-//        Integer sum = receiptRepository.sumQuantityByMedicineIdAndPatientId(patientId, medicineId);
-//        return sum != null && sum >= quantity;
-
         List<Receipt> receipts = receiptRepository.findAllByPatientIdAndMedicineId(patientId, medicineId);
 
         int sum = receipts.stream()
@@ -88,6 +85,17 @@ public class ReceiptServiceImpl implements ReceiptService {
     @Override
     public List<Receipt> findByPatientIdAndMedicineId(int userId, int medicineId){
         return receiptRepository.findAllByPatientIdAndMedicineId(userId, medicineId);
-    };
+    }
+
+    @Override
+    public void deleteReceiptById(int id){
+        receiptRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateReceiptQuantity(Receipt receipt, int receiptQuantity){
+        receipt.setQuantity(receiptQuantity);
+        receiptRepository.save(receipt);
+    }
 
 }

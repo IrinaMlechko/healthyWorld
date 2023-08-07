@@ -19,4 +19,8 @@ public interface ReceiptService {
     Optional<Receipt> findReceiptById(int id);
 
     List<Receipt> findByPatientIdAndMedicineId(int userId, int medicineId);
+
+    void deleteReceiptById(int id);
+
+    void updateReceiptQuantity(Receipt receipt, int receiptQuantity);
 }

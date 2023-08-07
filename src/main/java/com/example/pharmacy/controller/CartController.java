@@ -2,6 +2,7 @@ package com.example.pharmacy.controller;
 
 import com.example.pharmacy.dto.OrderDto;
 import com.example.pharmacy.entity.Receipt;
+import com.example.pharmacy.exception.NoActiveOrderFoundException;
 import com.example.pharmacy.service.CartService;
 import com.example.pharmacy.service.MedicineService;
 import com.example.pharmacy.service.ReceiptService;
@@ -36,12 +37,14 @@ public class CartController {
 
 
     @PostMapping("/buy")
-    public String buyItems(Model model) {
-        boolean isReadyToBuy = cartService.isReadyToBuy();
+    public String buyItems(Model model, HttpSession session) throws NoActiveOrderFoundException {
+        int userId = (int) session.getAttribute("userId");
+        int orderId = cartService.getOrderId(userId);
+        boolean isReadyToBuy = cartService.isReadyToBuy(userId);
         if (isReadyToBuy) {
-            // Perform the buy operation here
-            // ...
-            return "buy_success"; // Return the success view after buy
+            cartService.completePurchase(orderId);
+            session.removeAttribute("orderId");
+            return "buy_success";
         } else {
             String errorMsg = "Receipts required.";
             model.addAttribute("errorMsg", errorMsg);

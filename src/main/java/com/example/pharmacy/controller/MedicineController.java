@@ -55,7 +55,7 @@ public class MedicineController {
             } else {
                 user = userOptional.get();
             }
-            Optional<Order> orderOptional = orderService.findByUserID(userId);
+            Optional<Order> orderOptional = orderService.findByUserId(userId);
             if (orderOptional.isEmpty()) {
                 orderId = medicineService.createOrder(user);
             } else {
